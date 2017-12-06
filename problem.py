@@ -65,7 +65,7 @@ def _read_data(path, f_name):
     X_df = data.drop(_target_column_name, axis=1)
     test = os.getenv('RAMP_TEST_MODE', 0)
     if test:
-        return X_df[:100], y_array[:100]
+        return X_df, y_array
     else:
         return X_df, y_array
 

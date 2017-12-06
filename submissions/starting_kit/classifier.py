@@ -13,7 +13,7 @@ from keras.utils.np_utils import to_categorical
 
 class Classifier(BaseEstimator):
     def __init__(self):
-        self.clf = RandomForestClassifier()
+        self.clf = XGBClassifier()
 
     def fit(self, X, y):
         self.clf.fit(X, y)

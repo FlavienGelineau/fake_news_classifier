@@ -73,6 +73,8 @@ class FeatureExtractor(TfidfVectorizer):
         self.sources_seen = list(set(source for source in X_df.source))
         self.researched_by_seen = list(set(researched_by for researched_by in X_df.researched_by))
         self.state_seen = list(set(state for state in X_df.state))
+        self.job_seen = list(set(job for job in X_df.job))
+        self.edited_by_seen = list(set(edited_by for edited_by in X_df.edited_by))
 
         super(FeatureExtractor, self).fit(self._feat)
         return self
@@ -93,12 +95,12 @@ class FeatureExtractor(TfidfVectorizer):
 
     def get_number_for_elt(self, source, data_source):
         try:
-            return self.data_source.index(source)
+            return data_source.index(source)
         except:
             return -1
 
     def transform_source(self, X_df):
-        print(X_df)
+        #print(X_df)
         X_source = [
             [self.get_number_for_elt(source, self.sources_seen)] for source in
                       X_df.source]
@@ -108,7 +110,13 @@ class FeatureExtractor(TfidfVectorizer):
         X_state = [
             [self.get_number_for_elt(state, self.state_seen)] for state in
                     X_df.state]
+        X_job = [
+            [self.get_number_for_elt(job, self.job_seen)] for job in
+                    X_df.job]
 
-        fusion = [source+researched_by+state for source, researched_by, state in zip(X_source, X_researched_by, X_state)]
+        X_edited_by = [
+            [self.get_number_for_elt(edited_by, self.edited_by_seen)] for edited_by in
+                    X_df.edited_by]
+        fusion = [source+researched_by+state+job+edited_by for source, researched_by, state, job, edited_by in zip(X_source, X_researched_by, X_state, X_job, X_edited_by)]
         return np.array(fusion)
 
